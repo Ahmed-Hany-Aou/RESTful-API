@@ -1,6 +1,10 @@
 <?php
-use App\User;
 use App\Category;
+use App\Product;
+use App\Seller;
+use App\Transaction;
+use App\User;
+use Illuminate\Support\Str;
 /*
 |--------------------------------------------------------------------------
 | Model Factories
@@ -25,6 +29,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'verification_token' => $verified == User::VERIFIED_USER ? null : User::generateVerificationCode(),
         'admin' => $verified = $faker->randomElement([User::ADMIN_USER, User::REGULAR_USER]),
     ];
+    });
     $factory->define(Category::class, function (Faker\Generator $faker) {
         return [
             'name' => $faker->word,
@@ -42,4 +47,15 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
             // User::inRandomOrder()->first()->id
         ];
     });
-});
+    $factory->define(Transaction::class, function (Faker\Generator $faker) {
+        $seller = Seller::has('products')->get()->random();
+        $buyer = User::all()->except($seller->id)->random();
+    
+        return [
+            'quantity' => $faker->numberBetween(1, 3),
+            'buyer_id' => $buyer->id,
+            'product_id' => $seller->products->random()->id,
+            // User::inRandomOrder()->first()->id
+        ];
+    });
+
