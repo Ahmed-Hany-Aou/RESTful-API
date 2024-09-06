@@ -5,7 +5,7 @@ use App\Category;
 use App\Product;
 use App\Transaction;
 use App\User;
-use Illuminate\Database\Seeder;
+//use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 class DatabaseSeeder extends Seeder
 {
