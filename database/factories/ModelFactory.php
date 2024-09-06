@@ -1,5 +1,6 @@
 <?php
-
+use App\User;
+use App\Category;
 /*
 |--------------------------------------------------------------------------
 | Model Factories
@@ -24,4 +25,10 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'verification_token' => $verified == User::VERIFIED_USER ? null : User::generateVerificationCode(),
         'admin' => $verified = $faker->randomElement([User::ADMIN_USER, User::REGULAR_USER]),
     ];
+    $factory->define(Category::class, function (Faker\Generator $faker) {
+        return [
+            'name' => $faker->word,
+            'description' => $faker->paragraph(1),
+        ];
+    });
 });
