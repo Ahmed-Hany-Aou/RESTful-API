@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\ApiController;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+
 use App\User;
 
 
-class UserController extends Controller
+class UserController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -17,8 +18,9 @@ class UserController extends Controller
     public function index()
     {
 
-        $user = User::all();
-        return response()->json(['data' => $user], 200);
+        $users = User::all();
+       // return response()->json(['data' => $user], 200);
+       return $this ->showAll($users);
     }
 
     /**
@@ -51,7 +53,8 @@ class UserController extends Controller
         $data['admin'] = User::REGULAR_USER;
 
         $user = User::create($data);
-        return response()->json(['data' => $user], 201);
+       // return response()->json(['data' => $user], 201);
+       return $this->showOne($user,201);
     }
 
     /**
@@ -64,7 +67,8 @@ class UserController extends Controller
     {
         //
         $user = User::findorFail($id);
-        return response()->json(['data' => $user], 200);
+        //return response()->json(['data' => $user], 200);
+        return $this->showOne($user,200);
     }
 
     /**
@@ -116,7 +120,9 @@ class UserController extends Controller
         if (!$user->isDirty()) {
             return $this->errorResponse('You need to specify a different value to update', 422);
         }
-        return response()->json(['data' => $user], 200);
+        $user->save();
+       // return response()->json(['data' => $user], 200);
+       return $this->showOne($user);
     }
 
     /**
@@ -129,6 +135,7 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $user->delete();
-        return response()->json(['data' => $user], 200);
+        //return response()->json(['data' => $user], 200);
+        return $this->showOne($user);
     }
 }
